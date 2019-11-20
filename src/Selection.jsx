@@ -2,6 +2,10 @@ import React, { useState, useEffect } from 'react';
 import * as d3 from 'd3';
 
 function Selection() {
+    //* Keywords
+    //1. select, selectAll
+    //2. style, text
+    //3. enter, append; exit, remove
 
     useEffect(() => {
         console.log("Selection Mounted");
@@ -19,24 +23,31 @@ function Selection() {
             .style('font-size', function(d) {return d + "px"});
             
         // add nodes
-        d3.select('.add-node').selectAll('p')
+        d3.select('.add-node').selectAll('span')
         .data([4, 8, 15, 16, 23, 42])
-        .enter().append('p')
+        .enter().append('span')
         .text(function(d){
             return `I am number ${d} !`;
         })
         
         //todo if forget orginal data length. updating become 3 step
         //update content
-        var newText = d3.select('.add-node').selectAll('p')
+        var newText = d3.select('.add-node').selectAll('span')
                         .data([1,2,3,4,5]) //* will not create more nodes. Only update to the previous length
-                        .text(function(d) {return d});
+                        .text(function(d) {return d + ', '});
 
         // enter nodes
-        newText.enter().append('p').text(function(d) {return d;});
+        newText.enter().append('span').text(function(d) {return d;});
 
         // remove nodes
         newText.exit().remove();
+
+        
+        //*Transition, animation effect
+        d3.select('.transition1').transition()
+        .style('background-color', 'black')
+        .style('color', 'white')
+        .duration(1000); //time control
 
     }, [])
 
@@ -77,6 +88,20 @@ function Selection() {
                 <h3>Enter and Exit (add, remove and update nodes)</h3>
                 <div className="add-node">
 
+                </div>
+            </div>
+
+            <div className="container">
+                <h3>Transformation</h3>
+                <h4>Transition</h4>
+
+                <div className="transition1">
+                    this background will fade to black.
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
                 </div>
             </div>
         </div>
