@@ -23,19 +23,8 @@ function BarChart() {
     ]
     const [books, setBooks] = useState(initialBooks);
 
-    setBooks(books.concat(
-        {
-            name: "50 vegan dishes",
-            author: "Antti Leppanen",
-            genre: "non-fiction"
-        }
-    ))
-
-    d3.select(refs.myDiv).style("bbackground_color", "blue")
-    
-
     return (
-        <div ref="myDiv">
+        <div>
             <h1>
                 This will render a bar chart
             </h1>
