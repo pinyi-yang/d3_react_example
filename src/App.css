@@ -20,3 +20,18 @@
 .App-link {
   color: #09d3ac;
 }
+
+/* ============== barchart ====================== */
+.simple-barchart {
+  border: black solid 2px;
+  padding: 5px;
+}
+
+.simple-barchart div {
+  background-color: steelblue;
+  color: white;
+  padding: 3px;
+  margin: 1px;
+  font: 10px sans-serif;
+  text-align: right;
+}
