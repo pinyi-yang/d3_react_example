@@ -22,12 +22,12 @@
 }
 
 /* ============== barchart ====================== */
-.simple-barchart {
+.simple-barchart, .scale-to-fit {
   border: black solid 2px;
   padding: 5px;
 }
 
-.simple-barchart div {
+.simple-barchart div, .scale-to-fit div {
   background-color: steelblue;
   color: white;
   padding: 3px;
@@ -35,3 +35,4 @@
   font: 10px sans-serif;
   text-align: right;
 }
+
