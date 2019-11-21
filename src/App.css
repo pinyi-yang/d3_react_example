@@ -22,9 +22,10 @@
 }
 
 /* ============== barchart ====================== */
-.simple-barchart, .scale-to-fit {
+.chart {
   border: black solid 2px;
   padding: 5px;
+  margin: 10px;
 }
 
 .simple-barchart div, .scale-to-fit div {
@@ -36,3 +37,12 @@
   text-align: right;
 }
 
+rect {
+  fill: steelblue;
+}
+
+.svg-chart text {
+  fill: white;
+  font: 10px sans-serif;
+  text-anchor: end;
+}

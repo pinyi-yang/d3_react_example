@@ -26,6 +26,7 @@ function BarChart() {
     // const [books, setBooks] = useState(initialBooks);
 
     const [data, setData] = useState([30, 86, 168, 281, 303, 365]);
+    const [svgData, setSvgData] = useState([4, 8, 15, 16, 23, 42]);
 
     useEffect(() => {
         //render a simple barchart
@@ -39,8 +40,8 @@ function BarChart() {
 
         //scale to fit
         var x = d3.scaleLinear()
-                .domain([0, d3.max(data)]) //domain set to be max
-                .range([0, 800]) // div or image size
+                .domain([0, d3.max(data)]) //?data space: domain set to be max
+                .range([0, 800]) //?display space: div or image size
         
         d3.select('.scale-to-fit') // chart
         .selectAll('div') // bar
@@ -51,6 +52,38 @@ function BarChart() {
 
     }, [data])
 
+    useEffect(() => {
+        //todo render a svg image
+        //1. define image size and scale
+        var width = 800,
+            barHeight = 20;
+        
+        var x = d3.scaleLinear()
+                .domain([0, d3.max(svgData)])
+                .range([0, width]);
+
+        var chart = d3.select('.svg-chart')
+                    .attr('width', width)
+                    .attr('height', barHeight * svgData.length);
+                
+        //2. create bar for each data
+        var bar = chart.selectAll('g')
+                    .data(svgData)
+                    .enter().append('g')
+                    .attr('transform', function(d, i) { return `translate(0, ${i * barHeight})` });
+
+        bar.append('rect')
+        .attr("width", x)
+        .attr('height', barHeight - 1);
+
+        bar.append('text')
+        .attr('x', function(d) { return x(d) - 10;}) // x position of text, 
+        .attr('y', barHeight/2) // y position of text
+        .attr('dy', '.35em') //y offset to center text
+        .text(function(d) { return d });
+
+        
+    }, [])
    
 
     return (
@@ -59,12 +92,19 @@ function BarChart() {
                 This will render some bar charts
             </h2>
 
-            <div className="simple-barchart">
+            <div className="simple-barchart chart">
                 <h3>A simple bar chart</h3>
             </div>
 
-            <div className="scale-to-fit">
+            <div className="scale-to-fit chart">
                 <h3>bar chart scale to fit</h3>
+            </div>
+
+            <div className="chart">
+                <h3>Scallable Vector Graphics (SVG) Bar Chart</h3>
+                <svg className="svg-chart">
+
+                </svg>
             </div>
 
         </div>
