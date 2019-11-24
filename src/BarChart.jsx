@@ -1,4 +1,6 @@
 import React, {useEffect, useState} from 'react';
+import {Route, Link} from 'react-router-dom';
+import BarChart2 from './BarChart2';
 import * as d3 from 'd3';
 
 function BarChart() {
@@ -163,6 +165,12 @@ function BarChart() {
             <h2>
                 This will render some bar charts
             </h2>
+
+            <div>
+                <Link to='/barchart'>Basic Bar Charts</Link> | {' '}
+                <Link to ='/barchart2'>Advanced Charts</Link>
+            </div>
+            
 
             <div className="simple-barchart chart">
                 <h3>A simple bar chart</h3>
