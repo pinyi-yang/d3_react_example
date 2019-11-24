@@ -10,12 +10,12 @@ function BarChart2() {
 
         //todo: create chart and specify height and y range
         let height = 420,
-            barWidth = 25;
+            barWidth = 32;
 
         let chart = d3.select('.vertical-bar')
             .attr('height', height);
         let y = d3.scaleLinear()
-            .range([0, height]);
+            .range([height, 0]); //! note: need to draw 420 to 0, because 0 is at bottom for vertical chart
 
         //todo: read data from external source
         d3.csv('./data/data3a.csv').then(function(data) {
@@ -38,7 +38,15 @@ function BarChart2() {
             //todo: append element (rect) to each g
             bar.append('rect')
             .attr('width', barWidth - 1)
-            .attr('height', function(d) {return y(d.value);})  
+            .attr('height', function(d) {return height - y(d.value);}) //! y range is [height, 0]
+            .attr('y', function(d) {return y(d.value)})
+
+            //todo: append text
+            bar.append('text')
+            .attr('dy', '0.75em')
+            .attr('x', barWidth/2)
+            .attr('y', function(d) {return y(d.value) + 3;})
+            .text(function(d) { return d.value})
         })
 
     }, [])

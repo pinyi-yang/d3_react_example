@@ -46,3 +46,8 @@ rect {
   font: 10px sans-serif;
   text-anchor: end;
 }
+
+.vertical-bar text {
+  font: 10px sans-serif;
+  text-anchor:middle;
+}
