@@ -41,7 +41,7 @@ rect {
   fill: steelblue;
 }
 
-.svg-chart text {
+.svg-chart text, .load-data text {
   fill: white;
   font: 10px sans-serif;
   text-anchor: end;
