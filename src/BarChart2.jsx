@@ -48,30 +48,45 @@ function BarChart2() {
             // //todo: create and position .bar (rect) for each data
             let bar = chart.selectAll('.bar')
                 .data(data)
-                .enter().append('rect')
+                .enter().append('g')
                 .attr('class', 'bar')
-                .attr('transform', function(d,i) { return `translate (${margin.left}, ${margin.top})`})
-                .attr('width', barWidth - 1)
-                .attr('height', function(d) { return height - y(d.value)})
-                .attr('y', function(d) { return y(d.value)})
-                .attr('x', function(d, i) { return `${barWidth * i}`})
+                .attr('transform', function(d,i) { return `translate (${margin.left + barWidth * i}, ${margin.top})`})
+                
 
-            //! previous, append g then append element (rect) to each g
-            // bar.append('rect')
-            // .attr('width', barWidth - 1)
-            // .attr('height', function(d) {return height - y(d.value);}) //! y range is [height, 0]
-            // .attr('y', function(d) {return y(d.value)})
+            //todo: append element (rect) to each g
+            bar.append('rect')
+            .attr('width', barWidth - 1)
+            .attr('height', function(d) {return height - y(d.value);}) //! y range is [height, 0]
+            .attr('y', function(d) {return y(d.value)});
 
-            //todo: append text
-            chart.selectAll('.text')
-            .data(data)
-            .enter().append('text')
-            .attr('class', 'text')
-            .attr('transform', function(d,i) { return `translate (${margin.left}, ${margin.top})`})
-            .attr('dy', '0.75em')
-            .attr('x', function(d, i) {return barWidth * i + barWidth/2})
-            .attr('y', function(d) {return y(d.value) + 3;})
-            .text(function(d) { return d.value})
+            //todo: append text to each g
+            bar.append('text')
+            .attr('x', barWidth /2)
+            .attr('y', function(d) { return y(d.value) - 2})
+            .text(function(d) { return d.value});
+            
+            //?============================== 2nd method (less efficient):================================
+            // todo create and position .bar (rect) for each data
+            // let bar = chart.selectAll('.bar')
+            //     .data(data)
+            //     .enter().append('rect')
+            //     .attr('class', 'bar')
+            //     .attr('transform', function(d,i) { return `translate (${margin.left}, ${margin.top})`})
+            //     .attr('width', barWidth - 1)
+            //     .attr('height', function(d) { return height - y(d.value)})
+            //     .attr('y', function(d) { return y(d.value)})
+            //     .attr('x', function(d, i) { return `${barWidth * i}`})
+
+            // //todo: append text
+            // chart.selectAll('.text')
+            // .data(data)
+            // .enter().append('text')
+            // .attr('class', 'text')
+            // .attr('transform', function(d,i) { return `translate (${margin.left}, ${margin.top})`})
+            // .attr('dy', '0.75em')
+            // .attr('x', function(d, i) {return barWidth * i + barWidth/2})
+            // .attr('y', function(d) {return y(d.value) + 3;})
+            // .text(function(d) { return d.value})
         })
 
     }, [])

@@ -47,7 +47,7 @@ rect {
   text-anchor: end;
 }
 
-.text {
+.bar text {
   font: 10px sans-serif;
   text-anchor: middle;
 }
