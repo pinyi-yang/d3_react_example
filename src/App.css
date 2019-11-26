@@ -41,13 +41,13 @@ rect {
   fill: steelblue;
 }
 
-.svg-chart text, .load-data text {
+.svg-chart text, .load-data text{
   fill: white;
   font: 10px sans-serif;
   text-anchor: end;
 }
 
-.vertical-bar text {
+.vertical-bar text, .ordinal-data text  {
   font: 10px sans-serif;
   text-anchor:middle;
 }
