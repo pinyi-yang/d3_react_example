@@ -47,7 +47,22 @@ rect {
   text-anchor: end;
 }
 
-.vertical-bar text, .ordinal-data text  {
+.text {
   font: 10px sans-serif;
-  text-anchor:middle;
+  text-anchor: middle;
 }
+
+.axis text {
+  font: 10px sans-serif;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+/* .x.axis path {
+  display: none;
+} */

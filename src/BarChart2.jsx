@@ -9,42 +9,67 @@ function BarChart2() {
         //*create a vertical bar chart
 
         //todo: create chart and specify height and y range
-        let height = 420,
+        let margin = {top: 20, right: 30, bottom: 30, left: 40},
+            height = 420,
             barWidth = 32;
 
         let chart = d3.select('.vertical-bar')
-            .attr('height', 430);
+            .attr('height', height + margin.top + margin.bottom);
         let y = d3.scaleLinear()
             .range([height, 0]); //! note: need to draw 420 to 0, because 0 is at bottom for vertical chart
+            
+            //todo: read data from external source
+            d3.csv('./data/data3a.csv').then(function(data) {
+                data.forEach(function(d) {
+                    d.value = +d.value
+                    return d;
+                })
+                // console.log(data)
+                
+                //todo: specify y domain and chart width
+                chart.attr('width', barWidth * data.length + margin.left + margin.right);
+                let x = d3.scaleLinear()
+                    .range([0, barWidth * data.length])
+                y.domain([0, d3.max(data, function(d) { return d.value;})])
+                let xAxis = d3.axisBottom(x);
+                let yAxis = d3.axisLeft(y);
 
-        //todo: read data from external source
-        d3.csv('./data/data3a.csv').then(function(data) {
-            data.forEach(function(d) {
-                d.value = +d.value
-                return d;
-            })
-            // console.log(data)
+                //todo: add axis to graph
+                chart.append('g')
+                .attr('transform', `translate (${margin.left}, ${margin.top})`)
+                .attr('class', 'y axis')
+                .call(yAxis);
 
-            //todo: specify y domain and chart width
-            chart.attr('width', barWidth * data.length);
-            y.domain([0, d3.max(data, function(d) { return d.value;})])
+                chart.append('g')
+                .attr('transform', `translate (${margin.left}, ${margin.top + height})`)
+                .attr('class', 'x axis')
+                .call(xAxis);
 
-            //todo: create and position g for each data
-            let bar = chart.selectAll('g')
+            // //todo: create and position .bar (rect) for each data
+            let bar = chart.selectAll('.bar')
                 .data(data)
-                .enter().append('g')
-                .attr('transform', function(d,i) { return `translate (${barWidth * i}, 0)`});
+                .enter().append('rect')
+                .attr('class', 'bar')
+                .attr('transform', function(d,i) { return `translate (${margin.left}, ${margin.top})`})
+                .attr('width', barWidth - 1)
+                .attr('height', function(d) { return height - y(d.value)})
+                .attr('y', function(d) { return y(d.value)})
+                .attr('x', function(d, i) { return `${barWidth * i}`})
 
-            //todo: append element (rect) to each g
-            bar.append('rect')
-            .attr('width', barWidth - 1)
-            .attr('height', function(d) {return height - y(d.value);}) //! y range is [height, 0]
-            .attr('y', function(d) {return y(d.value)})
+            //! previous, append g then append element (rect) to each g
+            // bar.append('rect')
+            // .attr('width', barWidth - 1)
+            // .attr('height', function(d) {return height - y(d.value);}) //! y range is [height, 0]
+            // .attr('y', function(d) {return y(d.value)})
 
             //todo: append text
-            bar.append('text')
+            chart.selectAll('.text')
+            .data(data)
+            .enter().append('text')
+            .attr('class', 'text')
+            .attr('transform', function(d,i) { return `translate (${margin.left}, ${margin.top})`})
             .attr('dy', '0.75em')
-            .attr('x', barWidth/2)
+            .attr('x', function(d, i) {return barWidth * i + barWidth/2})
             .attr('y', function(d) {return y(d.value) + 3;})
             .text(function(d) { return d.value})
         })
