@@ -91,59 +91,134 @@ function BarChart2() {
 
     }, [])
 
+    //todo: render a vertical bar chart with a letter ordinal
     useEffect(() => {
-        // render a vertical bar chart with a letter ordinal
-        let height = 500,
+        //todo: step 1 create chart and initial setup
+        let margin = {top: 20, right: 30, bottom: 30, left: 40},
+            height = 500,
             width = 960;
 
         let chart = d3.select('.ordinal-data')
-            .attr('width', width)
-            .attr('height', height)
+            .attr('height', height + margin.top + margin.bottom)
+            .attr('width', width + margin.left + margin.right);
 
-        //todo x scale with letter, preivous use default, not set
-        let x = d3.scaleOrdinal()
-            .range([0, width], 0.1)
-            // .domain(["A", "B", "C", "D", "E", "F"]) //example
-            // .range([0, 1, 2, 3, 4, 5, 6]) // one to one
-
+        //* scales
         let y = d3.scaleLinear()
             .range([height, 0]);
+        let x = d3.scaleOrdinal();
 
-        // load data
+
+        //* axis
+        let yAxis = d3.axisLeft(y),
+            xAxis = d3.axisBottom(x);
+
+        //todo: step 2, import data and update initial setup
         d3.csv('./data/data3a.csv').then(function(data) {
-            data.forEach(function(d) {
-                d.value = +d.value;
-                return d;
-            });
-            console.log(data); //*passed
-
+            //* convert to number
+                data.forEach(function(d) {
+                    d.value = +d.value;
+                    return d;
+                });
+                console.log(data)
+            //* update initial setups
             let barWidth = width / data.length;
+            y.domain([0, d3.max(data, function(d) { return d.value})]); //data range to max of data value
+            
+            let xRange = [],
+                xDomain = [];
+            data.forEach((d, i) => {
+                xRange.push(barWidth * (i + 0.5))
+                xDomain.push(d.name)
+            })
+            console.log(xRange, xDomain);
+            x.domain(xDomain) // x domain to the name of data point
+            .range(xRange) // x range
+            //! is there a better way to setup xRange??
 
-            // set domain for x and y;
-            // console.log(data.map(function(d) {return d.name}))
-            y.domain([0, d3.max(data, function(d) { return d.value })]);
-            x.domain(data.map(function(d) { return d.name})); //todo 2nd step to set an ordinal x bar.
+            //* add and position axis
+            chart.append('g')
+                .attr('class', 'x axis')
+                .attr('transform', `translate (${margin.left}, ${margin.top + height})`)
+                .call(xAxis);
 
-            //append g to each data and position it
-            let bar = chart.selectAll('g')
+            chart.append('g')
+                .attr('class', 'y axis')
+                .attr('transform', `translate (${margin.left}, ${margin.top})`)
+                .call(yAxis);
+            
+            //* add g for each data point
+            let bar = chart.selectAll('.bar')
                 .data(data)
                 .enter().append('g')
-                .attr('transform', function(d, i) {return `translate (${barWidth*i}, 0)`});
+                .attr('class', 'bar')
+                .attr('transform', (d, i) => (`translate (${margin.left + i * barWidth}, ${margin.top})`));
 
-            //append rect to each g, set dimension and position it.
+            //* add element (rect) for each bar
             bar.append('rect')
-            .attr('width', barWidth - 1)
-            .attr('height', function(d) {return height - y(d.value)})
-            .attr('y', function(d) {return y(d.value)});
+                .attr('width', barWidth - 1.5)
+                .attr('height', (d) => (height - y(d.value)))
+                .attr('y', (d) => (y(d.value)));
 
-            //append text to each rect
+            //* add label (text) for each bar
             bar.append('text')
-            .attr('x', barWidth/2)
-            .attr('y', function(d) {return y(d.value) + 10})
-            .text(function(d) {return d.value})
+                .attr('x', barWidth / 2)
+                .attr('y', (d) => ( y(d.value) - 2 ))
+                .text((d) => (d.value));
+        });
 
 
-        })
+
+        // let height = 500,
+        //     width = 960;
+
+        // let chart = d3.select('.ordinal-data')
+        //     .attr('width', width)
+        //     .attr('height', height)
+
+        // //todo x scale with letter, preivous use default, not set
+        // let x = d3.scaleOrdinal()
+        //     .range([0, width], 0.1)
+        //     // .domain(["A", "B", "C", "D", "E", "F"]) //example
+        //     // .range([0, 1, 2, 3, 4, 5, 6]) // one to one
+
+        // let y = d3.scaleLinear()
+        //     .range([height, 0]);
+
+        // // load data
+        // d3.csv('./data/data3a.csv').then(function(data) {
+        //     data.forEach(function(d) {
+        //         d.value = +d.value;
+        //         return d;
+        //     });
+        //     console.log(data); //*passed
+
+        //     let barWidth = width / data.length;
+
+        //     // set domain for x and y;
+        //     // console.log(data.map(function(d) {return d.name}))
+        //     y.domain([0, d3.max(data, function(d) { return d.value })]);
+        //     x.domain(data.map(function(d) { return d.name})); //todo 2nd step to set an ordinal x bar.
+
+        //     //append g to each data and position it
+        //     let bar = chart.selectAll('g')
+        //         .data(data)
+        //         .enter().append('g')
+        //         .attr('transform', function(d, i) {return `translate (${barWidth*i}, 0)`});
+
+        //     //append rect to each g, set dimension and position it.
+        //     bar.append('rect')
+        //     .attr('width', barWidth - 1)
+        //     .attr('height', function(d) {return height - y(d.value)})
+        //     .attr('y', function(d) {return y(d.value)});
+
+        //     //append text to each rect
+        //     bar.append('text')
+        //     .attr('x', barWidth/2)
+        //     .attr('y', function(d) {return y(d.value) + 10})
+        //     .text(function(d) {return d.value})
+
+
+        // })
 
 
     }, [])

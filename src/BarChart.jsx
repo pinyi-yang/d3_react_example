@@ -1,31 +1,9 @@
 import React, {useEffect, useState} from 'react';
-import {Route, Link} from 'react-router-dom';
-import BarChart2 from './BarChart2';
+import {Link} from 'react-router-dom';
 import * as d3 from 'd3';
 
 function BarChart() {
     //* Keywords
-
-     // const initialBooks = [
-    //     {
-    //         name: "Harry Potter",
-    //         author: "J. K. Rowling",
-    //         genre: "fantasy",
-    //     }, {
-    //         name: "The PEdagogy of Freedom",
-    //         author: "Bell Hooks",
-    //         genre: "non-ficiton"
-    //     }, {
-    //         name: "Harry Potter 2",
-    //         author: "J. K. Rowling",
-    //         genre: "fantasy"
-    //     }, {
-    //         name: "Gilgamesh",
-    //         author: "Derrek Hines",
-    //         genre: "poetry"
-    //     }
-    // ]
-    // const [books, setBooks] = useState(initialBooks);
 
     const [data, setData] = useState([30, 86, 168, 281, 303, 365]);
     const [svgData, setSvgData] = useState([4, 8, 15, 16, 23, 42]);
